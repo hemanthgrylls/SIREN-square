@@ -2,8 +2,6 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import itertools
-import optuna
 
 from modules import SIREN, SOS_SIREN, WIRE, ReLU_PE, FINER, GAUSS, SIREN_RFF, SIREN_square, spectral_centroid
 from modules import train
@@ -45,7 +43,6 @@ files = ['training_data/audio/tetris.wav',
          'training_data/audio/voltage.wav',
          'training_data/audio/foley.wav',
          'training_data/audio/shattered.wav',
-         'training_data/audio/dilse.wav',
          'training_data/audio/radiation.wav',
          'training_data/audio/sparking.wav',
          'training_data/audio/birds.wav',

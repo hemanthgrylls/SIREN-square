@@ -2,7 +2,6 @@ import torch
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import itertools
 
 from modules import SIREN, SOS_SIREN, WIRE, ReLU_PE, FINER, GAUSS, SIREN_RFF, SIREN_square, spectral_centroid
 from modules import train
@@ -70,7 +69,7 @@ for img_file in image_files:
         SC = spectral_centroid(pixel_values.detach().cpu().numpy())
 
         # Update number of columns: 1 (GT) + N models + 1 (FFT column)
-        n_models = len(get_networks(n_channels, SC=SC, HL_dim=config.HL_dim))
+        n_models = len(get_networks(config, n_channels, SC=SC, HL_dim=config.HL_dim))
         fig, axes = plt.subplots(2, n_models + 2, figsize=(5 * (n_models + 2), 10))
         fig.subplots_adjust(wspace=0.05)
 
@@ -88,7 +87,7 @@ for img_file in image_files:
         psnrs = []
 
         # Train and collect everything
-        for i, model in enumerate(get_networks(n_channels, SC=SC, HL_dim=config.HL_dim)):
+        for i, model in enumerate(get_networks(config, n_channels, SC=SC, HL_dim=config.HL_dim)):
             model_name = f"{model.__class__.__name__}"
             batch_size = 256*256 if model_name in ['ReLU_PE', 'WIRE', 'GAUSS'] else 512*512
             psnr, model_output = train(model, coords, pixel_values, config, device, nb_epochs=config.nb_epochs, batch_size=batch_size)

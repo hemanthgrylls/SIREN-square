@@ -13,15 +13,6 @@ def sine_block(x: torch.Tensor, w0: float, a0: float):
     return a0 * torch.sin(w0 * x)
 
 @torch.jit.script
-def sos_core(x: torch.Tensor, a0: float, a1: float, w0: float, w1: float):
-    w = a1 * torch.sin(2 * 3.14159265 * w1 * x) + w0
-    return a0 * torch.sin(w * x)
-
-@torch.jit.script
-def hosc_core(x: torch.Tensor, beta: float, w0: float):
-    return torch.tanh(beta*torch.sin(w0*x))
-
-@torch.jit.script
 def gaussian_core(x: torch.Tensor, scale: float):
     return torch.exp(-(scale * x)**2)
 
@@ -45,36 +36,6 @@ class FinerLayerH(nn.Module):
             scale = torch.abs(x) + 1
         return sine_block(scale * x, self.w0, self.a0)
 
-
-def get_spectrum(data):
-    """
-    Compute N-D FFT magnitude for each channel, then average over channels.
-
-    Parameters
-    ----------
-    data : ndarray
-        Shape:
-          1D: [nt, fan_in]
-          2D: [nx, ny, fan_in]
-          3D: [nx, ny, nz, fan_in]
-    Returns
-    -------
-    fft_avg : ndarray
-        Averaged FFT magnitude over channels, same shape as spatial dims of input.
-    """
-    spatial_shape = data.shape[:-1]   # spatial/temporal dims
-    n_channels = data.shape[-1]
-
-    # fft_accum = np.zeros(spatial_shape, dtype=np.float64)
-    fft_accum = np.zeros(spatial_shape)
-
-    for ch in range(n_channels):
-        F = np.fft.fftn(data[..., ch])
-        fft_mag = np.abs(F)
-        fft_accum += fft_mag
-
-    fft_avg = fft_accum / n_channels
-    return fft_avg
 
 def spectral_centroid(x):
     # Last axis is always channels
@@ -143,14 +104,6 @@ class SIREN(nn.Module):
         return self.net(x)
 
 ############################################################################################################################
-def add_noise(tensor, scale):
-    """
-    Add Gaussian noise to the input tensor.
-    """
-    noise = torch.randn_like(tensor) * scale    # extract noise from normal distribution [mean=0, std=scale]
-
-    return tensor + noise    
-
 class SIREN_square(nn.Module):
     def __init__(self, omega_0=30, in_dim=1, HL_dim=256, out_dim=1, first_omega=30, n_HLs=4, spectral_centeroid = 0, S0=0, S1=0):
         super().__init__()
@@ -190,12 +143,12 @@ class SIREN_square(nn.Module):
         # insert the emperical formula to set S0 and S1 values as a function of (SC/n_ch)
         if self.in_dim == 1:    # audio
             a, b = 7, 3
-            self.S0 = 3500*(1-np.exp(-a*self.SC/np.sqrt(self.n_ch)))
-            self.S1 = self.SC/np.sqrt(self.n_ch) * b
+            self.S0 = 3500*(1-np.exp(-a*self.SC/self.n_ch))
+            self.S1 = self.SC/self.n_ch * b
         elif self.in_dim == 2:  # images
             a, b = 5, 0.4
-            self.S0 = 50*(1-np.exp(-a*self.SC/np.sqrt(self.n_ch)))
-            self.S1 = self.SC/np.sqrt(self.n_ch) * b
+            self.S0 = 50*(1-np.exp(-a*self.SC/self.n_ch))
+            self.S1 = self.SC/self.n_ch * b
         elif self.in_dim == 3:  # 3D
             self.S0 = self.S0
             self.S1 = self.S1

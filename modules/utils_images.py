@@ -5,7 +5,6 @@ import numpy as np
 import numpy.fft as fft
 import os
 import torch.nn.functional as F
-import matplotlib.pyplot as plt
 
 ############################################################################################################################
 
@@ -119,9 +118,6 @@ def set_target(device, filepath, gray=False):
             ])
             img = transform(image).squeeze(0).to(device)  # shape (H, W)
             img = img.unsqueeze(0)                        # shape (1, H, W)
-
-            img = F.interpolate(img.unsqueeze(0), size=(300, 300), mode='bilinear', align_corners=False)
-            img = img.squeeze(0)
         elif image.mode == 'RGB':
             transform = T.Compose([
                 T.ToTensor(),                              # shape (3, H, W)
@@ -129,8 +125,6 @@ def set_target(device, filepath, gray=False):
             ])
             
             img = transform(image).to(device)             # shape (3, H, W)
-            # img = F.interpolate(img.unsqueeze(0), size=(300, 300), mode='bilinear', align_corners=False)
-            # img = img.squeeze(0)
         else:
             raise ValueError(f"Unsupported image mode: {image.mode}")
     
