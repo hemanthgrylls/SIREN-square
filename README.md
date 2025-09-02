@@ -20,15 +20,6 @@ Deep neural networks are known to exhibit a spectral learning bias, wherein low-
 
 ---
 
-## Key highlights
-
-- <b>spectral bottleneck</b> can cause INRs to fail representing a signal (image, audio etc.). It is important to incorporate the knowledge of target in to the weight initialization. 
--  A new <b>target-aware weight initialization scheme</b> - WINNER, for implicit neural representations with SIREN is proposed.
--  <b>State-of-the-art 1D audio fitting accuracy</b> for signals dominated by high frequencies.
--  Improved fitting accuracy and faster convergence over baseline SIREN across all target types (audio, images, and 3D shapes).
-
----
-
 ## Cite as
 ```bibtex
 @article{chandravamsi2025spectral,
