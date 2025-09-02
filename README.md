@@ -1,32 +1,17 @@
-# SIREN_square (SIREN²): Target-aware noisy initialization for INRs
+# Spectral Bottleneck In Deep Neural Networks: Noise is All You Need
 
-SIREN² is a lightweight modification of SIREN that tackles the **spectral bottleneck**: standard INRs learn low frequencies first and may fail to recover high-frequency–dominant targets (e.g., audio) even when representationally capable. We add target-aware Gaussian noise to early weights at initialization, broadening the frequency support and stabilizing optimization. See Fig. 1 (spectral bottleneck) and Sec. 3 for the perturbation scheme. :contentReference[oaicite:0]{index=0}
+Project website: cfdlabtechnion.github.io/siren_square
+
+Deep neural networks are known to exhibit a spectral learning bias, wherein low-frequency components are learned early in training, while high-frequency modes emerge more gradually in later epochs. However, when the target signal lacks low-frequency components and is dominated by broadband high frequencies, training suffers from a \emph{spectral bottleneck}, and the model fails to reconstruct the entire signal, including the frequency components that lie within its representational capacity. We examine such a scenario in the context of implicit neural representations (INRs) with sinusoidal representation networks (SIRENs), focusing on the challenge of fitting high-frequency-dominant signals that are susceptible to spectral bottleneck. To effectively fit any target signal irrespecitve of it's frequency content, we propose a generalized target-aware \textit{weight perturbation scheme} (WINNER - weight initialization with noise for neural representations) for network initialization. The scheme perturbs uniformly initialized weights with Gaussian noise, where the noise scales are adaptively determined by the spectral centroid of the target signal. We show that the noise scales can provide control over the spectra of network activations and the eigenbasis of the empirical neural tangent kernel. This method not only addresses the spectral bottleneck but also yields faster convergence and with improved representation accuracy, outperforming state-of-the-art approaches in audio fitting and achieving notable gains in image fitting and denoising tasks. Beyond signal reconstruction, our approach opens new directions for adaptive weight initialization strategies in computer vision and scientific machine learning.
 
 ---
 
-## Method (one paragraph)
+## Key highlights
 
-Let the first two linear layers of a SIREN be initialized as in Sitzmann et al. Then perturb the weights with zero-mean Gaussian noise only up to layer 2:
-\[
-W^{(l)} \leftarrow W^{(l)} + \eta^{(l)},\quad 
-\eta^{(l)}_{jk}\sim\mathcal{N}\!\left(0,\; (s/\omega_0)^2\right),\quad
-l\in\{1,2\},
-\]
-leaving deeper layers unperturbed. The noise scales \((s_0,s_1)\) are set **target-aware** via the target’s spectral centroid \(\psi\):
-\[
-\psi = 2\,\frac{\sum_k k\,|\hat y(k)|}{\sum_k |\hat y(k)|},\qquad
-s_0 = s^{\max}_0 \Big( 1 - e^{a\sqrt{\psi}/C} \Big),\quad
-s_1 = b\,\frac{\psi}{\sqrt{C}},
-\]
-with recommended \([s^{\max}_0,a,b]=[3500,5,3]\) for audio and \([50,5,0.4]\) for images (see Eq. 11). This widens pre-activation spectra in early layers and slows NTK eigenvalue decay, improving high-frequency receptivity at init; cf. Figs. 7–8. :contentReference[oaicite:1]{index=1}
----
-
-## Results at a glance
-
-- **Audio fitting (150 k samples, 4×222 MLP; 5 runs each):** SIREN² reaches the best PSNR on all clips and the best **average** (≈ 64.5 dB) vs FINER++ (≈ 56.5 dB) and SIREN (≈ 34.8 dB). See Table 1 (page 10) and Fig. 9 (page 11). :contentReference[oaicite:2]{index=2}  
-- **Image fitting (4×256):** SIREN² consistently improves PSNR over SIREN; e.g., `noise.png` 36.1 dB vs 21.3 dB (+69%) and `camera.png` 44.9 dB vs 38.9 dB (+15%). See Table 2 (page 11) and Fig. 10. :contentReference[oaicite:3]{index=3}  
-- **Denoising:** For 2D fields and images, SIREN² better preserves fine structures (Figs. 11 & 15). Audio denoising uses \((s_0,s_1)\) to control frequency support; Table 3 summarizes PSNR. :contentReference[oaicite:4]{index=4}  
-- **Tensor-Train (TT) variant:** Replacing the 4th dense layer with a TT layer (torchtt) reduces params by ~8% while **increasing** PSNR (e.g., `relay.wav` 74.35 dB TT vs 71.73 dB dense). See Suppl. Table 4 (page 18). :contentReference[oaicite:5]{index=5}
+- <b>spectral bottleneck</b> can cause INRs to fail representing a signal (image, audio etc.). It is important to incorporate the knowledge of target in to the weight initialization. 
+-  A new <b>target-aware weight initialization scheme</b> - WINNER, for implicit neural representations with SIREN is proposed.
+-  <b>State-of-the-art 1D audio fitting accuracy</b> for signals dominated by high frequencies.
+-  Improved fitting accuracy and faster convergence over baseline SIREN across all target types (audio, images, and 3D shapes).
 
 ---
 
