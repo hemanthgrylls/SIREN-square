@@ -15,4 +15,12 @@ Deep neural networks are known to exhibit a spectral learning bias, wherein low-
 
 ---
 
-## Repo structure (minimal)
+## Cite as (BibTex)
+```bibtex
+@article{chandravamsi2025spectral,
+  title={Spectral Bottleneck in Deep Neural Networks: Noise is All You Need},
+  author={Chandravamsi, Hemanth and Shenoy, Dhanush V. and Zinn, Itay and Pisnoy, Shimon and Frankel, Steven H.},
+  journal={preprint under review},
+  year={2025},
+  url={https://cfdlabtechnion.github.io/siren_square/}
+}
