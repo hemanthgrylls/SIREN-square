@@ -1,4 +1,5 @@
 # Spectral Bottleneck In Deep Neural Networks: Noise is All You Need
+![Alt text](results/image_cats.png)
 
 ---
 ## Key highlights
