@@ -11,7 +11,12 @@
 
 ## Project Website  
 
-[https://cfdlabtechnion.github.io/siren_square](https://cfdlabtechnion.github.io/siren_square)
+<p align="center">
+  <a href="https://cfdlabtechnion.github.io/siren_square">
+    <img src="https://img.shields.io/badge/Visit-Project%20Website-blue?style=for-the-badge&logo=github" alt="Project Website"/>
+  </a>
+</p>
+
 
 ---
 ## Papers
