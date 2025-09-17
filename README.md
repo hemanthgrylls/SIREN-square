@@ -1,6 +1,12 @@
 # Spectral Bottleneck In Deep Neural Networks: Noise is All You Need
 ![Demo result](https://cfdlabtechnion.github.io/siren_square/multimedia_files/image_cats.png)
 
+<p align="center">
+  <a href="https://cfdlabtechnion.github.io/siren_square">
+    <img src="https://img.shields.io/badge/Visit-Project%20Website-blue?style=for-the-badge&logo=github" alt="Project Website"/>
+  </a>
+</p>
+
 ---
 ## Key highlights
 
@@ -8,15 +14,6 @@
 -  A new <b>target-aware weight initialization scheme</b> - WINNER, for implicit neural representations with SIREN is proposed.
 -  <b>State-of-the-art 1D audio fitting accuracy</b> for signals dominated by high frequencies.
 -  Improved fitting accuracy and faster convergence over baseline SIREN across all target types (audio, images, and 3D shapes).
-
-## Project Website  
-
-<p align="center">
-  <a href="https://cfdlabtechnion.github.io/siren_square">
-    <img src="https://img.shields.io/badge/Visit-Project%20Website-blue?style=for-the-badge&logo=github" alt="Project Website"/>
-  </a>
-</p>
-
 
 ---
 ## Papers
