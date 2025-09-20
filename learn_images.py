@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-from modules import SIREN, SOS_SIREN, WIRE, ReLU_PE, FINER, GAUSS, SIREN_RFF, SIREN_square, spectral_centroid
+from modules import SIREN, WIRE, ReLU_PE, FINER, GAUSS, SIREN_RFF, SIREN_square, spectral_centroid
 from modules import train
 from modules import generate_coordinates, set_target, show_image, compute_fft_image, save_reconstructed_image
 
@@ -26,25 +26,21 @@ class config:
     scheculer_step = 20     # iteration frequency to update learning rate
     n_repeats = 1           # number of random trails (to get mean and standard deviation of psnr)
     n_HLs = 5               # number of hidden layers
-    nb_epochs = 100       # total training epochs
+    nb_epochs = 4000       # total training epochs
     HL_dim = 256            # hidden layer dimension
 
     results_folder = './results/image_fitting/'  # folder to save results
 ############################################################################################################################
 image_files = [
-    'training_data/images/camera.png', 
+    'training_data/images/camera.png',  
+    # 'training_data/images/general/noise1.png'
     # 'training_data/images/rock_512.jpg', 
     # 'training_data/images/braided_0064.jpg', 
     # 'training_data/images/castle_512.jpg', 
-    # 'training_data/images/general/noise1.png'
                ]
-# image_files = ['training_data/images/general/noise1.png', 'training_data/images/camera.png', 'training_data/images/rings.png']
-# image_files = ['training_data/images/general/high_freq.png', 'training_data/images/radial.png']
-# image_files = ['training_data/images/general/noise2.png', 'training_data/images/general/castle.jpg']
-# image_files = ['training_data/images/general/castle_512.jpg']
 
 # Network factory
-def get_networks(n_channels, SC=0, S0=0, S1=0, HL_dim=256):
+def get_networks(config, n_channels, SC=0, S0=0, S1=0, HL_dim=256):
     return [
         SIREN(in_dim=2, HL_dim=HL_dim, out_dim=n_channels, w0=30, first_w0=30, n_HLs=config.n_HLs).to(device),
         SIREN_square(omega_0=30, in_dim=2, HL_dim=HL_dim, out_dim=n_channels, first_omega=30, n_HLs=config.n_HLs, spectral_centeroid = SC, S0=0, S1=0).to(device),
@@ -78,7 +74,7 @@ for img_file in image_files:
         axes[0][0].set_title('Ground Truth', fontsize=13)
 
         fft_gt = compute_fft_image(img)
-        axes[1][0].imshow(fft_gt, cmap='plasma')
+        axes[1][0].imshow(fft_gt, cmap='gray')
         axes[1][0].set_title('FFT (GT)', fontsize=13)
         axes[1][0].axis('off')
 

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 
-from modules import SIREN, SOS_SIREN, WIRE, ReLU_PE, FINER, GAUSS, SIREN_RFF, SIREN_square, spectral_centroid
+from modules import SIREN, WIRE, ReLU_PE, FINER, GAUSS, SIREN_RFF, SIREN_square, spectral_centroid
 from modules import train
 from modules import set_audio_target, wav_to_tensor, tensor_to_wav, plot_waveforms
 
@@ -37,6 +37,7 @@ class config:
 
 ############################################################################################################################
 files = ['training_data/audio/tetris.wav',
+         'training_data/audio/relay.wav',
          'training_data/audio/arch.wav',
          'training_data/audio/tap.wav',
          'training_data/audio/whoosh.wav',
@@ -46,7 +47,8 @@ files = ['training_data/audio/tetris.wav',
          'training_data/audio/radiation.wav',
          'training_data/audio/sparking.wav',
          'training_data/audio/birds.wav',
-         'training_data/audio/gt_bach.wav']
+         'training_data/audio/gt_bach.wav'
+         ]
 
 def get_networks(config, n_channels, HL_dim=256, SC=0, S0=0, S1=0):
     return [

@@ -5,6 +5,7 @@ import numpy as np
 import numpy.fft as fft
 import os
 import torch.nn.functional as F
+import matplotlib.pyplot as plt
 
 ############################################################################################################################
 
@@ -95,6 +96,7 @@ def save_reconstructed_image(tensor, path, n_channels):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     image.save(path)
 
+############################################################################################################################
 
 def set_target(device, filepath, gray=False):
     ext = os.path.splitext(filepath)[-1].lower()    # get the extension
